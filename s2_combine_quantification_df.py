@@ -5,8 +5,6 @@ from glob import glob
 import pandas as pd
 
 SAMPLES_DEST = "/data/trang/covid19_data_CZ8746_annotation/segmentation"
-INFECTED = ["A","B","C","D"]
-NONINFECTED = ["E","F","G","H"]
 
 def concat_df(samples):
     new_list = []
@@ -25,9 +23,6 @@ def concat_df(samples):
         print(f"Missing samples {new_list}")
     celld_fs_combined = pd.concat(cell_dfs_list)
     return celld_fs_combined
-
-def assign_infection(df):
-    df["Infection"] = 0
     
 
 if __name__ == "__main__":
@@ -37,7 +32,6 @@ if __name__ == "__main__":
             samples.append(root)
     samples.sort()
     celld_fs_combined = concat_df(samples)
-    cell
     print(celld_fs_combined.head())
     print(celld_fs_combined.shape)
     celld_fs_combined.to_csv(os.path.join(SAMPLES_DEST,'cells_combined.csv'), index=False)
