@@ -29,7 +29,7 @@ if __name__ == "__main__":
     #SEGMENTATION_FOLDER = "/data/trang/covid19_data_CZ8746_annotation/segmentation2"
     #CHANNELS = ["_blue.tiff", "_red.tiff", "_green.tiff", "_yellow.tiff"]
     CSV_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection/11"
-    SAVE_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection/12_up"
+    SAVE_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection/11_up"
     if not os.path.exists(SAVE_FOLDER):
         os.makedirs(SAVE_FOLDER)
 

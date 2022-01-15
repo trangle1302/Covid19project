@@ -3,7 +3,7 @@ import hpacellseg.cellsegmentator as cellsegmentator
 from hpacellseg.utils import label_cell, label_nuclei
 import glob
 import imageio
-import np
+import numpy as np
 from skimage import measure
 from geojson import Polygon as geojson_polygon
 from shapely.geometry import Polygon as shapely_polygon
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     #CHANNELS = ["_blue.tiff", "_red.tiff", "_green.tiff", "_yellow.tiff"]
     #CSV_FOLDER = "/data/trang/covid19_data_CZ8746_max_projection/10"
     CSV_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection/12_up"
-    SEGMENTATION_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation"
+    SEGMENTATION_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12"
     NUC_MODEL = "./nuclei-model.pth"
     CELL_MODEL = "./cell-model.pth"
     segmentator = cellsegmentator.CellSegmentator(
