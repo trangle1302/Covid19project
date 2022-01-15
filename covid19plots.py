@@ -3,32 +3,35 @@ import matplotlib.pyplot as plt
 from scipy import stats
 import numpy as np
 import os
+from statsmodels.sandbox.stats.multicomp import multipletests
 
 #SAMPLES_DEST = "/data/trang/covid19_data_CZ8746_annotation/segmentation"
 SAVE_DEST = "/home/trangle/Desktop/Covid19project"
-df = pd.read_csv('/data/hao/forTrang/cells_combined_nobigcell.csv') 
+df = pd.read_csv("/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/cells_combined_nobigcell.csv")
+# df = pd.read_csv('/data/hao/forTrang/cells_combined_nobigcell.csv') 
 # df = pd.read_csv('/home/trangle/Desktop/Covid19project/celldata_fromHao/cells_combined_nobigcell.csv')
-df['well_id'] = [image_id.split('/')[-1][:-2] for image_id in df.image_id]
-meta = pd.read_csv('/home/trangle/Desktop/Covid19project/Experiment_design/meta_ab.csv')
+df['well_id'] = [image_id.rsplit('_',1)[0] for image_id in df.image_id]
+#meta = pd.read_csv('/home/trangle/Desktop/Covid19project/Experiment_design/meta_ab.csv')
+meta = pd.read_csv('/home/trangle/Desktop/Covid19project/Experiment_design/meta_ab_CZ8751.csv')
 
 
 empty_wells=set(df.well_id) - set(meta.well_id)
 well_ids = set(df.well_id) - empty_wells
 fc_p_df= pd.DataFrame()
 for area in ['nuclei', 'cytosol','cell']:
-    colname_protein = 'protein-%s-integration' % area
+    colname_protein = 'protein-%s-mean' % area
     #colname_virus = 'virus-%s-integration' % area
     
     for well_id in well_ids:
         tmp = df[df.well_id == well_id]
-        well_meta= meta[meta.well_id==well_id]
+        well_meta = meta[meta.well_id==well_id]
         infected = tmp[tmp.Infected==1][colname_protein]
         ninfected = tmp[tmp.Infected==0][colname_protein]
         fc = np.mean(infected)/np.mean(ninfected)
         t2, p2 = stats.ttest_ind(infected,ninfected)
         p_info = {'well_id': well_id,
                   'Antibody': well_meta.Antibody.values[0], 
-                  'Gene_first': well_meta.Gene.values[0].split(';')[0],
+                  'Gene_first': str(well_meta.Gene.values[0]).split(';')[0],
                   'Gene': well_meta.Gene.values[0], 
                   'ENSGID': well_meta.ENSGID.values[0],
                   'Region': area,
@@ -36,8 +39,10 @@ for area in ['nuclei', 'cytosol','cell']:
                   'avg_infected': np.mean(infected), 'avg_noninfected':np.mean(ninfected),
                   'fc': np.mean(fc), 'pval': p2}
         fc_p_df = fc_p_df.append(p_info, ignore_index=True)
-        
-fc_p_df.to_csv(os.path.join(SAVE_DEST, 'Foldchange_integratedintensity_2.csv'), index=False)
+fc_p_df["Log2FC"] = np.log2(fc_p_df.fc)
+fc_p_df["pval_adjusted"] = multipletests(fc_p_df.pval, method='bonferroni')[1]
+
+fc_p_df.to_csv(os.path.join(SAVE_DEST, 'Foldchange_meanintensity_CZ8751.csv'), index=False)
 #https://gist.github.com/dblyon/402a5fe1e1e211f34d5b230e0a4c93cc
 """
 # Create Protein-Antibody-Well mapping
