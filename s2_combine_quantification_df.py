@@ -4,7 +4,7 @@ import numpy as np
 from glob import glob
 import pandas as pd
 
-SAMPLES_DEST = "/data/trang/covid19_data_CZ8746_annotation/segmentation"
+SAMPLES_DEST = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12"
 
 def concat_df(samples):
     new_list = []

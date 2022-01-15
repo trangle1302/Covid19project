@@ -8,10 +8,18 @@ import seaborn as sns
 
 
 
-SAMPLES_DEST = "/data/trang/covid19_data_CZ8746_annotation/segmentation"
+#SAMPLES_DEST = "/data/trang/covid19_data_CZ8746_annotation/segmentation"
+SAMPLES_DEST = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/"
 url4labels = "https://raw.githubusercontent.com/haoxusci/imjoy-plugin-config/master/config/Covid19ImageAnnotator.imjoy.config.json"
-NONINFECTED = ["A","B","C","D"]
-INFECTED = ["E","F","G","H"]
+
+EXPERIMENT = "CZ8751"
+if EXPERIMENT == "CZ8751": # plate 11,12
+    NONINFECTED = ["G11", "A12", "B12", "C12", "D12", "E12", "F12", "G12", "H12"]
+    #INFECTED = 
+elif EXPERIMENT == "CZ8746": # plate 10
+    NONINFECTED = ["A","B","C","D"]
+    INFECTED = ["E","F","G","H"]
+
 
 def config_to_labels(imjoy_url):
     labels_covid_json = requests.get(imjoy_url)
@@ -181,12 +189,14 @@ def plot_violin(well_cells_filterted, pValue_nuclei_integ, pValue_cytosol_integ,
     print(ymin, ymax)
     ymin = min(ymin, 0)
     plt.ylim(ymin, )
-    plt.savefig(os.path.join(save_dir, well_id + '_mean.png'), dpi=100)
-    plt.savefig(os.path.join(save_dir, well_id + '_mean.svg'), dpi=100)
+    plt.savefig(os.path.join(save_dir, str(well_id) + '_mean.png'), dpi=100)
+    plt.savefig(os.path.join(save_dir, str(well_id) + '_mean.svg'), dpi=100)
 
 if __name__ == "__main__":
     df_cells = pd.read_csv(os.path.join(SAMPLES_DEST, "cells_combined_nobigcell.csv")) 
-    meta = pd.read_csv('/home/trangle/Desktop/Covid19project/Experiment_design/meta_ab_CZ8746.csv')
+    meta = pd.read_csv(f'/home/trangle/Desktop/Covid19project/Experiment_design/meta_ab_{EXPERIMENT}.csv')
+    if EXPERIMENT == "CZ8751":
+        meta["well_id"] = ["_".join([str(r.plate), r.well_id]) for _,r in meta.iterrows()]
     violin_per_well = False
     violin_per_ab = True
 
@@ -204,10 +214,11 @@ if __name__ == "__main__":
             plot_violin(well_cells_filterted, pValue_nuclei_integ, pValue_cytosol_integ, pValue_cell_integ, save_dir, well_id)
     
     if violin_per_ab:
-        df_cells['well_id'] = [image_id.split('/')[-1][:-2] for image_id in df_cells.image_id]
+        df_cells['well_id'] = [image_id.rsplit('_',1)[0] for image_id in df_cells.image_id]
         df_cells['Ab'] = [meta[meta.well_id==well].Antibody.values[0] for well in df_cells.well_id]
         antibodies = list(set(meta.Antibody))
         save_dir = os.path.join(os.path.dirname(SAMPLES_DEST), "violin_ab")
+        os.makedirs(save_dir, exist_ok=True)
         for ab in antibodies:
             well_cells = df_cells[df_cells.Ab == ab]
             well_cells_filterted, pValue_nuclei_integ, pValue_cytosol_integ, pValue_cell_integ = get_cells_filtered(well_cells)

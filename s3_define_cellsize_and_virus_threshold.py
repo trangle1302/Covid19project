@@ -5,10 +5,14 @@ import io
 import os
 import json
 
-
-SAMPLES_DEST = "/data/trang/covid19_data_CZ8746_annotation/segmentation"
-NONINFECTED = ["A","B","C","D"]
-INFECTED = ["E","F","G","H"]
+EXPERIMENT = "CZ8751"
+SAMPLES_DEST = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/11"
+if EXPERIMENT == "CZ8751": # plate 11,12
+    NONINFECTED = ["G11", "A12", "B12", "C12", "D12", "E12", "F12", "G12", "H12"]
+    #INFECTED = 
+elif EXPERIMENT == "CZ8746": # plate 10
+    NONINFECTED = ["A","B","C","D"]
+    INFECTED = ["E","F","G","H"]
 
 
 
@@ -45,7 +49,11 @@ if __name__ == "__main__":
     df_cells["image_id"] = [os.path.basename(f) for f in df_cells.image_id]
     df_cells["well_id"] = [os.path.basename(f).split("_")[1] for f in df_cells.image_id]
     print(df_cells['well_id'][:3])
-    df_cells["Infected"] = [0 if (f[:1] in NONINFECTED) else 1 for f in df_cells.well_id]
+    
+    if EXPERIMENT == "CZ8751": # plate 11,12
+        df_cells["Infected"] = [0 if (f in NONINFECTED) else 1 for f in df_cells.well_id]
+    else: # plate 10 and previous
+        df_cells["Infected"] = [0 if (f[:1] in NONINFECTED) else 1 for f in df_cells.well_id]
     mean_noninfected = df_cells[df_cells["Infected"]==0]["virus-cytosol-50to75percentmean"].mean()
     df_cells["Infected"][(df_cells.Infected==1)&(df_cells["virus-cytosol-50to75percentmean"]<mean_noninfected)] = 0 
     print(f"NI/I threshold {mean_noninfected}, NI/I counts: {df_cells.Infected.value_counts()}")

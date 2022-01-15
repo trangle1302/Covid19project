@@ -11,8 +11,8 @@ from collections import OrderedDict
 from skimage.filters import threshold_otsu
 
 
-SAMPLES_DEST = "/data/trang/covid19_data_CZ8746_annotation/segmentation"
-IMG_DIR = "/data/trang/covid19_data_CZ8746_max_projection/10"
+SAMPLES_DEST = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12"
+IMG_DIR = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection/12"
 ALL_SAMPLES = []
 for root, dirs, files in os.walk(SAMPLES_DEST):
     if ("dpnunet_nuclei_mask.png" in files) and (
