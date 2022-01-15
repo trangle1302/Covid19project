@@ -10,7 +10,7 @@ from shutil import copyfile, rmtree
 from imageio import imread
 
 
-SEGMENTATION_FOLDER = "/data/trang/covid19_data_CZ8746_annotation/segmentation2"
+SEGMENTATION_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/"
 
 def masks_to_polygon(img_mask, label=None, save_name=None, simplify_tol=1.5):
     """
@@ -92,4 +92,35 @@ if __name__ == "__main__":
             except:
                 i += 1
                 print(save_name)
-    print(i)
+    print(f"Number of masks failed: {i}")
+
+""" Failed list. check some images and the signals don't show clear cells, so dpnunet_cell_mask and dpnunet_nuclei_mask == 0
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/11/11_D5_27/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/11/11_F5_4/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_B9_9/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_B9_8/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_B9_10/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_B10_1/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_C11_6/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_G10_18/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_C10_2/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_G8_6/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_C9_8/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_F10_1/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_D9_8/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_C9_3/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_G8_4/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_C11_7/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_C11_3/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_D10_4/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_G10_13/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_C11_8/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_C10_5/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_D8_3/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_D10_2/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_G10_19/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_C11_4/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_C10_4/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_D10_3/annotation.json
+/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_C9_4/annotation.json
+ """
