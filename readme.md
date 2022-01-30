@@ -1,5 +1,7 @@
-Spatialprotein covid screen
+Subcellualar spatialproteomic screen of SARS-CoV-2 infection
 ===============================
+
+This repo is for the analysis of spatial proteomics screen in the manuscript "Subcellular mapping of the protein landscape of SARS-CoV-2 infected cells for target-centric drug repurposing".
 
 ### Steps to preprocess plates for annotation-tool:
 Step 1. Convert file names and max-projection
@@ -8,6 +10,10 @@ Step 1. Convert file names and max-projection
 Step 2. Segmentation with HPACellSegmentator and convert mask to geojson file
 `python generate_covid_dataset-max-projection_segmentation.py`
 `python mask_to_json.py`
+
+If signals are too low in a plate, they need to be magnified for the segmentation algirthm to work. Note: The increased intensity is only used to create masks, subsequent analysis rely on raw intensity.
+`python generate_covid_dataset-max-projection.py`
+`python generate_covid_dataset-max-projection_segmentation.py`
 
 ### Steps to analyse intensity hits:
 Step 3. Violin plot
