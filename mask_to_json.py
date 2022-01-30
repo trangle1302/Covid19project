@@ -94,7 +94,7 @@ if __name__ == "__main__":
                 print(save_name)
     print(f"Number of masks failed: {i}")
 
-""" Failed list. check some images and the signals don't show clear cells, so dpnunet_cell_mask and dpnunet_nuclei_mask == 0
+""" Failed list plate 11&12 (CZ8751). check some images and the signals don't show clear cells, so dpnunet_cell_mask and dpnunet_nuclei_mask == 0
 /data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/11/11_D5_27/annotation.json
 /data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/11/11_F5_4/annotation.json
 /data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_B9_9/annotation.json
@@ -105,6 +105,7 @@ if __name__ == "__main__":
 /data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_G10_18/annotation.json
 /data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_C10_2/annotation.json
 /data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_G8_6/annotation.json
+
 /data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_C9_8/annotation.json
 /data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_F10_1/annotation.json
 /data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_D9_8/annotation.json
@@ -115,6 +116,7 @@ if __name__ == "__main__":
 /data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_D10_4/annotation.json
 /data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_G10_13/annotation.json
 /data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_C11_8/annotation.json
+
 /data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_C10_5/annotation.json
 /data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_D8_3/annotation.json
 /data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/12_D10_2/annotation.json
