@@ -10,10 +10,10 @@ Step 1. Convert file names and max-projection
 python generate_covid_dataset-max-projection.py
 ```
 Paths need to be updated: 
-- `acquired_data_path`: Raw data acquisition path with *Images* folder (input folder)
-- `formatted_data_folder`: Images with formatted names (intermediate folder)
-- `data_base`: Images with max-projection (output folder)
-- `annotation_folder`: Folder for `annotation-tool` with Imjoy (output folder, only used when manual annotation is later needed)
+- `ACQUIRED_DATA_PATH`: Raw data acquisition path with *Images* folder (input folder)
+- `FORMATTED_DATA_PATH`: Images with formatted names (intermediate folder)
+- `IMG_FOLDER`: Images with max-projection (output folder)
+- `ANNOTATION_FOLDER`: Folder for `annotation-tool` with Imjoy (output folder, only used when manual annotation is later needed)
 
 Step 2. Segmentation with HPACellSegmentator and convert mask to geojson file
 ```sh
@@ -21,10 +21,10 @@ python generate_covid_dataset-max-projection_segmentation.py
 python mask_to_json.py
 ```
 Paths need to be updated: 
-- `acquired_data_path`: Raw data acquisition path with *Images* folder (input folder)
-- `formatted_data_folder`: Images with formatted names (intermediate folder)
-- `data_base`: Images with max-projection (output folder)
-- `annotation_folder`: Folder for `annotation-tool` with Imjoy (output folder, only used when manual annotation is later needed)
+- `IMG_FOLDER`: Images with max-projection 
+- `SEGMENTATION_FOLDER`: path to save segmentation masks
+- `NUC_MODEL`: nuclei model path
+- `CELL_MODEL`: cell model path
 
 If signals are too low in a plate, they need to be magnified for the segmentation algirthm to work. Note: The increased intensity is only used to create masks, subsequent analysis rely on raw intensity.
 ```sh
@@ -40,6 +40,12 @@ python s2_combine_quantification_df.py
 python s3_define_cellsize_and_virus_threshold.py
 python s4_violinplot_adjustment.py
 ```
+Paths need to be updated: 
+- `IMG_FOLDER`: Images with max-projection
+- `SAMPLE_DEST`: sample destination
+- (s4_)`NONINFECTED`: Wells or well pattern with non-infected cells
+- (s4_)`INFECTED`: Wells or well pattern with non-infected cells
+
 Step 4. Fold change, volcano and circle plot
 ```sh
 python covid19plots.py
