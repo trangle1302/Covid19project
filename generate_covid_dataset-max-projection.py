@@ -176,15 +176,15 @@ if __name__ == "__main__":
     
     # generate csvs, including all-tasks.csv, all-well-tasks.csv
     # where to host the csvs
-    #csv_folder = "/data/trang/covid19_data_CZ8746_annotation2"
+    #annotation_folder = "/data/trang/covid19_data_CZ8746_annotation2"
 
     acquired_data_path = "/data/trang/211111_COVID19_repurposing_Marianna"
     formatted_data_folder = "/data/trang/211111_COVID19_repurposing_Marianna_formatted"
     data_base = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection"
-    csv_folder = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation"
+    annotation_folder = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation"
     channels = ["_blue.tiff", "_red.tiff", "_green.tiff", "_yellow.tiff"]
     format_covid_data(acquired_data_path, formatted_data_folder)
     generate_max_projection_images(formatted_data_folder, data_base)
-    if not os.path.isdir(csv_folder):
-        os.makedirs(csv_folder)
-    generate_task_lists(csv_folder, data_base)
+    if not os.path.isdir(annotation_folder):
+        os.makedirs(annotation_folder)
+    generate_task_lists(annotation_folder, data_base)
