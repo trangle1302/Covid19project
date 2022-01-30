@@ -178,13 +178,13 @@ if __name__ == "__main__":
     # where to host the csvs
     #annotation_folder = "/data/trang/covid19_data_CZ8746_annotation2"
 
-    acquired_data_path = "/data/trang/211111_COVID19_repurposing_Marianna"
-    formatted_data_folder = "/data/trang/211111_COVID19_repurposing_Marianna_formatted"
-    data_base = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection"
-    annotation_folder = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation"
+    ACQUIRED_DATA_PATH = "/data/trang/211111_COVID19_repurposing_Marianna"
+    FORMATTED_DATA_PATH = "/data/trang/211111_COVID19_repurposing_Marianna_formatted"
+    IMG_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection"
+    ANNOTATION_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation"
     channels = ["_blue.tiff", "_red.tiff", "_green.tiff", "_yellow.tiff"]
-    format_covid_data(acquired_data_path, formatted_data_folder)
-    generate_max_projection_images(formatted_data_folder, data_base)
-    if not os.path.isdir(annotation_folder):
-        os.makedirs(annotation_folder)
-    generate_task_lists(annotation_folder, data_base)
+    format_covid_data(ACQUIRED_DATA_PATH, FORMATTED_DATA_PATH)
+    generate_max_projection_images(FORMATTED_DATA_PATH, IMG_FOLDER)
+    if not os.path.isdir(ANNOTATION_FOLDER):
+        os.makedirs(ANNOTATION_FOLDER)
+    generate_task_lists(ANNOTATION_FOLDER, IMG_FOLDER)

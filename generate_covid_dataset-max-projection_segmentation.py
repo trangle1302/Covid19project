@@ -107,8 +107,8 @@ if __name__ == "__main__":
     #CSV_FOLDER = "/data/trang/covid19_data_CZ8746_max_projection/10"
     #SEGMENTATION_FOLDER = "/data/trang/covid19_data_CZ8746_annotation/segmentation2"
     #CHANNELS = ["_blue.tiff", "_red.tiff", "_green.tiff", "_yellow.tiff"]
-    #CSV_FOLDER = "/data/trang/covid19_data_CZ8746_max_projection/10"
-    CSV_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection/12_up"
+    #IMG_FOLDER = "/data/trang/covid19_data_CZ8746_max_projection/10"
+    IMG_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection/12_up"
     SEGMENTATION_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12"
     NUC_MODEL = "./nuclei-model.pth"
     CELL_MODEL = "./cell-model.pth"
@@ -122,4 +122,4 @@ if __name__ == "__main__":
     )
     if not os.path.exists(SEGMENTATION_FOLDER):
         os.makedirs(SEGMENTATION_FOLDER)
-    segment(CSV_FOLDER, SEGMENTATION_FOLDER, segmentator)
+    segment(IMG_FOLDER, SEGMENTATION_FOLDER, segmentator)
