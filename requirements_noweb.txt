@@ -1,0 +1,21 @@
+palettable==3.3.0
+pandas==1.1.5
+scikit-fmm==2019.1.30
+scikit-image==0.16.2
+scikit-learn==0.21.3
+scikit-multilearn==0.2.0
+scipy==1.4.1
+seaborn==0.11.1
+segmentation-models==1.0.1
+simplejson==3.13.2
+six==1.15.0
+sklearn==0.0
+Shapely==1.7.0
+geojson==2.5.0
+hpacellseg @ git+ssh://git@github.com/CellProfiling/HPA-Cell-Segmentation.git@874ac51406a6ab99339ad985e7e15c8d5d9c22e3
+numpy==1.18.5
+matplotlib==3.3.4
+imageio==2.6.1
+requests==2.24.0
+seaborn==0.11.1
+
