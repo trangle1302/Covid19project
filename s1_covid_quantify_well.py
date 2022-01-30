@@ -12,13 +12,13 @@ from skimage.filters import threshold_otsu
 
 
 SAMPLES_DEST = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12"
-IMG_DIR = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection/12"
+IMG_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection/12"
 ALL_SAMPLES = []
 for root, dirs, files in os.walk(SAMPLES_DEST):
     if ("dpnunet_nuclei_mask.png" in files) and (
         "dpnunet_cell_mask.png" in files
     ):
-        img_path = os.path.join(IMG_DIR, os.path.basename(root))
+        img_path = os.path.join(IMG_FOLDER, os.path.basename(root))
         ALL_SAMPLES.append((img_path, root))
 
 IMAGE_CHS = OrderedDict(
