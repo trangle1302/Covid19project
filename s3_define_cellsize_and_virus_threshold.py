@@ -5,20 +5,28 @@ import io
 import os
 import json
 
-EXPERIMENT = "CZ8751"
-SAMPLES_DEST = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/11"
+EXPERIMENT = "DV9903"#"CZ8751"
+#SAMPLES_DEST = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/11"
+ACQUIRED_DATA_PATH = "/data/trang/HPA_DV9903_Prescreen"
+PLATEID = "DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
+SAMPLES_DEST = f"{ACQUIRED_DATA_PATH}_max_projection_annotation/segmentation/{PLATEID}"
+
 if EXPERIMENT == "CZ8751": # plate 11,12
     NONINFECTED = ["G11", "A12", "B12", "C12", "D12", "E12", "F12", "G12", "H12"]
     #INFECTED = 
 elif EXPERIMENT == "CZ8746": # plate 10
     NONINFECTED = ["A","B","C","D"]
     INFECTED = ["E","F","G","H"]
+elif EXPERIMENT == "DV9903":
+    INFECTED = ["A","B","C","D","E","F","G"]
+    NONINFECTED = ["H"]
 
 
 
 if __name__ == "__main__":
     df_cells = pd.read_csv(os.path.join(SAMPLES_DEST, "cells_combined.csv")) 
     print(df_cells[['nuclei-size', 'cytosol-size', 'cell-size']].head())
+    print(f"Number of cells in total: {df_cells.shape[0]}")
 
     nuclei_sizes = df_cells['nuclei-size'].to_list()
     cytosol_sizes = df_cells['cytosol-size'].to_list()
@@ -40,15 +48,15 @@ if __name__ == "__main__":
     fig.tight_layout()
     plt.savefig(os.path.join(SAMPLES_DEST, 'showme.png'))
     #plt.show()
-
+    print(df_cells["cell-size"].describe())
     df_cells = df_cells[df_cells['cell-size']<7.5e4]
     df_cells = df_cells[df_cells['cell-size']>3500]
     df_cells.to_csv(os.path.join(SAMPLES_DEST, "cells_combined_nobigcell.csv"), index=False)
 
     df_cells["paths"] = df_cells["image_id"]
     df_cells["image_id"] = [os.path.basename(f) for f in df_cells.image_id]
-    df_cells["well_id"] = [os.path.basename(f).split("_")[1] for f in df_cells.image_id]
-    print(df_cells['well_id'][:3])
+    df_cells["well_id"] = [os.path.basename(f).split("_")[-2] for f in df_cells.image_id]
+    print(f"Well_id examples: {sorted(list(set(df_cells.well_id)))}")
     
     if EXPERIMENT == "CZ8751": # plate 11,12
         df_cells["Infected"] = [0 if (f in NONINFECTED) else 1 for f in df_cells.well_id]

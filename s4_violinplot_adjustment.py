@@ -8,18 +8,22 @@ import seaborn as sns
 
 
 
-#SAMPLES_DEST = "/data/trang/covid19_data_CZ8746_annotation/segmentation"
-SAMPLES_DEST = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/"
+EXPERIMENT = "DV9903"
+ACQUIRED_DATA_PATH = "/data/trang/HPA_DV9903_Prescreen"
+PLATEID = "DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
+SAMPLES_DEST = f"{ACQUIRED_DATA_PATH}_max_projection_annotation/segmentation/{PLATEID}"
 url4labels = "https://raw.githubusercontent.com/haoxusci/imjoy-plugin-config/master/config/Covid19ImageAnnotator.imjoy.config.json"
 
-EXPERIMENT = "CZ8751"
+#EXPERIMENT = "CZ8751"
 if EXPERIMENT == "CZ8751": # plate 11,12
     NONINFECTED = ["G11", "A12", "B12", "C12", "D12", "E12", "F12", "G12", "H12"]
     #INFECTED = 
 elif EXPERIMENT == "CZ8746": # plate 10
     NONINFECTED = ["A","B","C","D"]
     INFECTED = ["E","F","G","H"]
-
+elif EXPERIMENT == "DV9903":
+    INFECTED = ["A","B","C","D","E","F","G"]
+    NONINFECTED = ["H"]
 
 def config_to_labels(imjoy_url):
     labels_covid_json = requests.get(imjoy_url)

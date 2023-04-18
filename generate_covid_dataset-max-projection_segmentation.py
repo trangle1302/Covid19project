@@ -108,8 +108,9 @@ if __name__ == "__main__":
     #SEGMENTATION_FOLDER = "/data/trang/covid19_data_CZ8746_annotation/segmentation2"
     #CHANNELS = ["_blue.tiff", "_red.tiff", "_green.tiff", "_yellow.tiff"]
     #IMG_FOLDER = "/data/trang/covid19_data_CZ8746_max_projection/10"
-    IMG_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection/12_up"
-    SEGMENTATION_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12"
+    ACQUIRED_DATA_PATH = "/data/trang/HPA_DV9903_Prescreen"
+    IMG_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection/DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
+    SEGMENTATION_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection_annotation/segmentation/DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
     NUC_MODEL = "./nuclei-model.pth"
     CELL_MODEL = "./cell-model.pth"
     segmentator = cellsegmentator.CellSegmentator(

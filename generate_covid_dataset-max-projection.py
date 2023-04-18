@@ -143,10 +143,11 @@ def generate_max_projection_images(formatted_data_folder, data_base):
         # print('&'*80)
         # print(img_dtype)
         fovs = list(
-            map(lambda item: "_".join(item.split("_")[:3]), all_images)
+            map(lambda item: "_".join(item.split("_")[:-2]), all_images)
         )
         fovs = list(set(fovs))
         # print(fovs)
+        
         for _, fov in enumerate(fovs):
             fov_chs = []
             for i in range(len(channels)):
@@ -177,13 +178,14 @@ if __name__ == "__main__":
     # generate csvs, including all-tasks.csv, all-well-tasks.csv
     # where to host the csvs
     #annotation_folder = "/data/trang/covid19_data_CZ8746_annotation2"
-
-    ACQUIRED_DATA_PATH = "/data/trang/211111_COVID19_repurposing_Marianna"
-    FORMATTED_DATA_PATH = "/data/trang/211111_COVID19_repurposing_Marianna_formatted"
-    IMG_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection"
-    ANNOTATION_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation"
+    
+    #ACQUIRED_DATA_PATH = "/data/trang/211111_COVID19_repurposing_Marianna"
+    ACQUIRED_DATA_PATH = "/data/trang/HPA_DV9903_Prescreen"#/DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
+    FORMATTED_DATA_PATH = f"{ACQUIRED_DATA_PATH}_formatted"
+    IMG_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection"
+    ANNOTATION_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection_annotation"
     channels = ["_blue.tiff", "_red.tiff", "_green.tiff", "_yellow.tiff"]
-    format_covid_data(ACQUIRED_DATA_PATH, FORMATTED_DATA_PATH)
+    #format_covid_data(ACQUIRED_DATA_PATH, FORMATTED_DATA_PATH)
     generate_max_projection_images(FORMATTED_DATA_PATH, IMG_FOLDER)
     if not os.path.isdir(ANNOTATION_FOLDER):
         os.makedirs(ANNOTATION_FOLDER)
