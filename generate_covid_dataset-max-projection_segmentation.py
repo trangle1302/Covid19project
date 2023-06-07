@@ -18,24 +18,29 @@ def segment(image_folder, save_dir, segmentator):
     img = imageio.imread(images[2][1])
     print(img.shape, img.max(), img.min())
 
-    # For nuclei
-    nuc_segmentations = segmentator.pred_nuclei(images[2])
+    chunk_size = 10
+    n = len(images[2])
+    for start_ in range(0, n, chunk_size):
+        end_ = min(start_ + chunk_size, n)
+        images_chunked = [er[start_:end_], covid[start_:end_], nu[start_:end_]]
 
-    # For full cells
-    cell_segmentations = segmentator.pred_cells(images)
+        # For nuclei
+        nuc_segmentations = segmentator.pred_nuclei(images_chunked[2])
 
-    # post-processing
-    for i, pred in enumerate(cell_segmentations):
-        nuclei_mask, cell_mask = label_cell(nuc_segmentations[i], cell_segmentations[i])
-        FOV_dir = os.path.join(save_dir, os.path.basename(covid[i]).replace("_red.tiff",""))
-        if not os.path.exists(FOV_dir):
-            os.makedirs(FOV_dir)
-        print(nuclei_mask.dtype, cell_mask.max())
-        #print(covid[i], os.path.join(FOV_dir,'dpnunet_cell_mask.png'))
-        imageio.imwrite(os.path.join(FOV_dir,'dpnunet_cell_mask.png'), cell_mask) 
+        # For full cells
+        cell_segmentations = segmentator.pred_cells(images_chunked)
 
-        #print(covid[i], os.path.join(FOV_dir,'dpnunet_nuclei_mask.png'))
-        imageio.imwrite(os.path.join(FOV_dir,'dpnunet_nuclei_mask.png'), nuclei_mask) 
+        # post-processing
+        for i, pred in enumerate(cell_segmentations):
+            nuclei_mask, cell_mask = label_cell(nuc_segmentations[i], cell_segmentations[i])
+            FOV_dir = os.path.join(save_dir, os.path.basename(images_chunked[1][i]).replace("_red.tiff",""))
+            if not os.path.exists(FOV_dir):
+                os.makedirs(FOV_dir)
+            print(nuclei_mask.dtype, cell_mask.max())
+            
+            imageio.imwrite(os.path.join(FOV_dir,'dpnunet_cell_mask.png'), cell_mask) 
+
+            imageio.imwrite(os.path.join(FOV_dir,'dpnunet_nuclei_mask.png'), nuclei_mask) 
 
 def masks_to_polygon(img_mask, label=None, save_name=None, simplify_tol=1.5):
     """
@@ -108,9 +113,9 @@ if __name__ == "__main__":
     #SEGMENTATION_FOLDER = "/data/trang/covid19_data_CZ8746_annotation/segmentation2"
     #CHANNELS = ["_blue.tiff", "_red.tiff", "_green.tiff", "_yellow.tiff"]
     #IMG_FOLDER = "/data/trang/covid19_data_CZ8746_max_projection/10"
-    ACQUIRED_DATA_PATH = "/data/trang/HPA_DV9903_Prescreen"
-    IMG_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection/DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
-    SEGMENTATION_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection_annotation/segmentation/DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
+    ACQUIRED_DATA_PATH = "/data/trang/HPA_CZ8780"#HPA_DV9903_Prescreen"
+    IMG_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection/CZ8780_plate_I" #DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
+    SEGMENTATION_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection_annotation/segmentation/CZ8780_plate_I"#DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
     NUC_MODEL = "./nuclei-model.pth"
     CELL_MODEL = "./cell-model.pth"
     segmentator = cellsegmentator.CellSegmentator(
