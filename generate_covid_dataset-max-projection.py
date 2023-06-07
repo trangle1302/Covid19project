@@ -28,12 +28,22 @@ def format_covid_data(acquired_data_path, formatted_data_folder):
         "r07": "G",
         "r08": "H",
     }
+    # all plates
     channel_mapping = {
         "ch1": "blue.tiff", # Hoechst
         "ch2": "green.tiff", # Alexa 488 - protein
         "ch3": "red.tiff", # Alexa 555 - covid
         "ch4": "yellow.tiff", # Alexa 647 - ER
     }
+
+    # For CZ8780
+    channel_mapping = {
+        "ch1": "red.tiff", # dTomato (covid)
+        "ch2": "green.tiff", # Alexa 488 - protein
+        "ch3": "yellow.tiff", # Alexa 555 - er
+        "ch4": "blue.tiff", # Hoechst
+    }
+
     for plate in plates:
         plate_folder = os.path.join(formatted_data_folder, plate)
         os.makedirs(plate_folder, exist_ok=True)
@@ -110,6 +120,9 @@ def generate_task_lists(csv_folder, data_base):
 
 
 def proj_channel(channel_imgs, img_dtype):
+    # for channel_img in channel_imgs:
+    #     print(channel_img)
+    #     print(imread(channel_img))
     channel_imgs = np.max(
         [imread(channel_img) for channel_img in channel_imgs], axis=0
     )
@@ -125,7 +138,7 @@ def generate_max_projection_images(formatted_data_folder, data_base):
             os.listdir(formatted_data_folder),
         )
     )
-    for plate in plates:
+    for plate in plates[1:]:
         plate_folder = os.path.join(data_base, plate)
         os.makedirs(plate_folder, exist_ok=True)
         all_images = []
@@ -161,8 +174,10 @@ def generate_max_projection_images(formatted_data_folder, data_base):
                 print("*" * 40)
                 print(fov)
                 for i, channel_img in enumerate(fov_chs):
-                    fov_chs[i] = proj_channel(channel_img, img_dtype)
                     save_path = os.path.join(plate_folder, fov + channels[i])
+                    if os.path.exists(save_path):
+                        continue
+                    fov_chs[i] = proj_channel(channel_img, img_dtype)
                     # print(save_path)
                     imsave(save_path, fov_chs[i])
             except AssertionError:
@@ -180,7 +195,7 @@ if __name__ == "__main__":
     #annotation_folder = "/data/trang/covid19_data_CZ8746_annotation2"
     
     #ACQUIRED_DATA_PATH = "/data/trang/211111_COVID19_repurposing_Marianna"
-    ACQUIRED_DATA_PATH = "/data/trang/HPA_DV9903_Prescreen"#/DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
+    ACQUIRED_DATA_PATH = "/data/trang/HPA_CZ8780" #HPA_DV9903_Prescreen"#/DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
     FORMATTED_DATA_PATH = f"{ACQUIRED_DATA_PATH}_formatted"
     IMG_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection"
     ANNOTATION_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection_annotation"
