@@ -10,8 +10,8 @@ from matplotlib import pyplot as plt
 from collections import OrderedDict
 from skimage.filters import threshold_otsu
 
-ACQUIRED_DATA_PATH = "/data/trang/HPA_DV9903_Prescreen"
-PLATEID = "DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
+ACQUIRED_DATA_PATH = "/data/trang/HPA_CZ8780"#HPA_DV9903_Prescreen"
+PLATEID = "CZ8780_plate_II"
 SAMPLES_DEST = f"{ACQUIRED_DATA_PATH}_max_projection_annotation/segmentation/{PLATEID}"
 IMG_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection/{PLATEID}"
 ALL_SAMPLES = []

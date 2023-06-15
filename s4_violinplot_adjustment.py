@@ -24,7 +24,8 @@ elif EXPERIMENT == "CZ8746": # plate 10
 elif EXPERIMENT == "DV9903":
     INFECTED = ["A","B","C","D","E","F","G"]
     NONINFECTED = ["H"]
-
+elif EXPERIMENT == "CZ8780":
+    NONINFECTED = ["B12", "C12", "D12", "E12", "H12"]
 def config_to_labels(imjoy_url):
     labels_covid_json = requests.get(imjoy_url)
     labels_dict = labels_covid_json.json()["labels"]["numerized_labels"]

@@ -4,8 +4,8 @@ import numpy as np
 from glob import glob
 import pandas as pd
 
-ACQUIRED_DATA_PATH = "/data/trang/HPA_DV9903_Prescreen"
-PLATEID = "DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
+ACQUIRED_DATA_PATH = "/data/trang/HPA_CZ8780"#HPA_DV9903_Prescreen"
+PLATEID = "CZ8780_plate_II"#"DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
 SAMPLES_DEST = f"{ACQUIRED_DATA_PATH}_max_projection_annotation/segmentation/{PLATEID}"
 
 def concat_df(samples):
