@@ -5,15 +5,19 @@ import numpy as np
 import os
 from statsmodels.sandbox.stats.multicomp import multipletests
 
-#SAMPLES_DEST = "/data/trang/covid19_data_CZ8746_annotation/segmentation"
+EXPERIMENT = "CZ8780"
+ACQUIRED_DATA_PATH = f"/data/trang/HPA_{EXPERIMENT}" #HPA_DV9903_Prescreen"#/DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
+FORMATTED_DATA_PATH = f"{ACQUIRED_DATA_PATH}_formatted"
+IMG_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection"
+ANNOTATION_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection_annotation"
 SAVE_DEST = "/home/trangle/Desktop/Covid19project"
-df = pd.read_csv("/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/cells_combined_nobigcell.csv")
-# df = pd.read_csv('/data/hao/forTrang/cells_combined_nobigcell.csv') 
-# df = pd.read_csv('/home/trangle/Desktop/Covid19project/celldata_fromHao/cells_combined_nobigcell.csv')
+df = pd.read_csv(f"{ANNOTATION_FOLDER}/segmentation/cells_combined_nobigcell.csv")
 df['well_id'] = [image_id.rsplit('_',1)[0] for image_id in df.image_id]
 #meta = pd.read_csv('/home/trangle/Desktop/Covid19project/Experiment_design/meta_ab.csv')
-meta = pd.read_csv('/home/trangle/Desktop/Covid19project/Experiment_design/meta_ab_CZ8751.csv')
-
+meta = pd.read_csv(f'/home/trangle/Desktop/Covid19project/Experiment_design/meta_ab_{EXPERIMENT}.csv')
+meta["well_id"] = meta.plate + "_" + meta.well_id
+meta["Gene"] = meta["gene_names"]
+meta["ENSGID"] = meta["ensembl_ids"]
 
 empty_wells=set(df.well_id) - set(meta.well_id)
 well_ids = set(df.well_id) - empty_wells
@@ -39,10 +43,11 @@ for area in ['nuclei', 'cytosol','cell']:
                   'avg_infected': np.mean(infected), 'avg_noninfected':np.mean(ninfected),
                   'fc': np.mean(fc), 'pval': p2}
         fc_p_df = fc_p_df.append(p_info, ignore_index=True)
+print(fc_p_df)
 fc_p_df["Log2FC"] = np.log2(fc_p_df.fc)
 fc_p_df["pval_adjusted"] = multipletests(fc_p_df.pval, method='bonferroni')[1]
 
-fc_p_df.to_csv(os.path.join(SAVE_DEST, 'Foldchange_meanintensity_CZ8751.csv'), index=False)
+fc_p_df.to_csv(os.path.join(SAVE_DEST, f'Foldchange_meanintensity_{EXPERIMENT}.csv'), index=False)
 #https://gist.github.com/dblyon/402a5fe1e1e211f34d5b230e0a4c93cc
 """
 # Create Protein-Antibody-Well mapping
