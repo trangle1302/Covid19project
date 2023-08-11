@@ -36,4 +36,6 @@ if __name__ == "__main__":
     celld_fs_combined = concat_df(samples)
     print(celld_fs_combined.head())
     print(celld_fs_combined.shape)
-    celld_fs_combined.to_csv(os.path.join(SAMPLES_DEST,'cells_combined.csv'), index=False)
+    save_path = os.path.join(SAMPLES_DEST,'cells_combined.csv')
+    print(f"Saving to {save_path}")
+    celld_fs_combined.to_csv(save_path, index=False)
