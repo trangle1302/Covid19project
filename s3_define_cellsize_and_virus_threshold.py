@@ -50,7 +50,7 @@ if __name__ == "__main__":
     plt.savefig(os.path.join(SAMPLES_DEST, 'showme.png'))
     #plt.show()
     print(df_cells["cell-size"].describe())
-    df_cells = df_cells[df_cells['cell-size']<7.5e4]
+    df_cells = df_cells[df_cells['cell-size']<8e4]
     df_cells = df_cells[df_cells['cell-size']>3500]
     df_cells.to_csv(os.path.join(SAMPLES_DEST, "cells_combined_nobigcell.csv"), index=False)
 
@@ -67,6 +67,6 @@ if __name__ == "__main__":
     df_cells["Infected"][(df_cells.Infected==1)&(df_cells["virus-cytosol-50to75percentmean"]<mean_noninfected)] = 0 
     print(f"NI/I threshold {mean_noninfected}, NI/I counts: {df_cells.Infected.value_counts()}")
     df_cells.to_csv(os.path.join(SAMPLES_DEST, "cells_combined_nobigcell.csv"), index=False)
-    
+    print(df_cells.groupby("well_id").agg({"Infected":"value_counts"}))
     #for row in np.range(0,24):
     #    mean_noninfected = 
