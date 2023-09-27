@@ -1,8 +1,9 @@
 
 library(calibrate)
-# Volcano plot 
+# Volcano plot, need to generate for each compartment
 res = read.csv('./Foldchange_meanintensity_CZ8780.csv', header=TRUE)
 res$log2FoldChange = log2(res$fc)
+res = subset(res, Region == 'nuclei') # 'cytosol','cell'
 res$padj = p.adjust(res$pval, method = 'BH', n = length(res$pval))
 with(subset(res, padj<.05 & abs(log2FoldChange)>1), textxy(log2FoldChange, -log10(pval), labs=Gene, cex=.8))
 
