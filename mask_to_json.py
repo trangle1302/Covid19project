@@ -9,8 +9,8 @@ import pandas as pd
 from shutil import copyfile, rmtree
 from imageio import imread
 
-
-SEGMENTATION_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection_annotation/segmentation/12/"
+ACQUIRED_DATA_PATH = "/data/trang/HPA_CZ8780"
+SEGMENTATION_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection_annotation/segmentation/CZ8780_plate_II"
 
 def masks_to_polygon(img_mask, label=None, save_name=None, simplify_tol=1.5):
     """
