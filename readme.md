@@ -32,6 +32,12 @@ python generate_covid_dataset-max-projection.py
 python generate_covid_dataset-max-projection_segmentation.py
 ```
 
+If the experiment needs to be uploaded to annotation tool later, change `SEGMENTATION_FOLDER` and run
+```sh
+python mask_to_json.py
+```
+to create `annotation.json` files for each FOV.
+
 ## Steps to analyse intensity hits:
 Step 3. Covid and protein quantification, Violin plot
 ```sh
