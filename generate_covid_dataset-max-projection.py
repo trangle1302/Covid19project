@@ -101,8 +101,8 @@ def generate_task_lists(csv_folder, data_base):
     all_well_tasks = []
     for image in images_found:
         image_items = image.split("_")
-        all_tasks.append("_".join(image_items[:3]))
-        all_well_tasks.append("_".join(image_items[:2]))
+        all_tasks.append("_".join(image_items[:-1]))
+        all_well_tasks.append("_".join(image_items[:-2]))
     all_tasks = list(set(all_tasks))
     all_well_tasks = list(set(all_well_tasks))
     all_tasks.sort()
@@ -201,7 +201,7 @@ if __name__ == "__main__":
     ANNOTATION_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection_annotation"
     channels = ["_blue.tiff", "_red.tiff", "_green.tiff", "_yellow.tiff"]
     #format_covid_data(ACQUIRED_DATA_PATH, FORMATTED_DATA_PATH)
-    generate_max_projection_images(FORMATTED_DATA_PATH, IMG_FOLDER)
-    if not os.path.isdir(ANNOTATION_FOLDER):
-        os.makedirs(ANNOTATION_FOLDER)
+    #generate_max_projection_images(FORMATTED_DATA_PATH, IMG_FOLDER)
+    #if not os.path.isdir(ANNOTATION_FOLDER):
+    #    os.makedirs(ANNOTATION_FOLDER)
     generate_task_lists(ANNOTATION_FOLDER, IMG_FOLDER)
