@@ -1,8 +1,7 @@
 import os
-import os
 import glob
 import imageio
-
+import configs as cfg
 
 def intensity_increase(image_folder, save_dir, channels_ratio):
     covid = glob.glob(image_folder + '/' + '*_red.tiff')
@@ -23,16 +22,7 @@ def intensity_increase(image_folder, save_dir, channels_ratio):
 
 
 if __name__ == "__main__":
-    # generate csvs, including all-tasks.csv, all-well-tasks.csv
-    # where to host the csvs
-    #IMG_FOLDER = "/data/trang/covid19_data_CZ8746_max_projection/10"
-    #SEGMENTATION_FOLDER = "/data/trang/covid19_data_CZ8746_annotation/segmentation2"
-    #CHANNELS = ["_blue.tiff", "_red.tiff", "_green.tiff", "_yellow.tiff"]
-    #IMG_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection/11"
-    #SAVE_FOLDER = "/data/trang/211111_COVID19_repurposing_Marianna_max_projection/11_up"
-    ACQUIRED_DATA_PATH = "/data/trang/HPA_CZ8780"
-    IMG_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection/CZ8780_plate_II"
-    SAVE_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection/CZ8780_plate_II_up"
+    SAVE_FOLDER = f"{cfg.IMG_FOLDER}_up"
     if not os.path.exists(SAVE_FOLDER):
         os.makedirs(SAVE_FOLDER)
 
@@ -42,4 +32,4 @@ if __name__ == "__main__":
         '_blue.tiff': 10,
         '_yellow.tiff': 5
     }
-    intensity_increase(IMG_FOLDER, SAVE_FOLDER, channels_ratio)
+    intensity_increase(cfg.IMG_FOLDER, cfg.SAVE_FOLDER, channels_ratio)
