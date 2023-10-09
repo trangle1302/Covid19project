@@ -8,6 +8,7 @@ from skimage import measure
 from geojson import Polygon as geojson_polygon
 from shapely.geometry import Polygon as shapely_polygon
 from geojson import Feature, FeatureCollection, dump
+import configs as cfg
 
 def segment(image_folder, save_dir, segmentator):
     covid = glob.glob(image_folder + '/' + '*_red.tiff')
@@ -107,25 +108,15 @@ def masks_to_polygon(img_mask, label=None, save_name=None, simplify_tol=1.5):
         os.chmod(save_name, 0o777)
 
 if __name__ == "__main__":
-    # generate csvs, including all-tasks.csv, all-well-tasks.csv
-    # where to host the csvs
-    #CSV_FOLDER = "/data/trang/covid19_data_CZ8746_max_projection/10"
-    #SEGMENTATION_FOLDER = "/data/trang/covid19_data_CZ8746_annotation/segmentation2"
-    #CHANNELS = ["_blue.tiff", "_red.tiff", "_green.tiff", "_yellow.tiff"]
-    #IMG_FOLDER = "/data/trang/covid19_data_CZ8746_max_projection/10"
-    ACQUIRED_DATA_PATH = "/data/trang/HPA_CZ8780"#HPA_DV9903_Prescreen"
-    IMG_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection/CZ8780_plate_I" #DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
-    SEGMENTATION_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection_annotation/segmentation/CZ8780_plate_I"#DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
-    NUC_MODEL = "./nuclei-model.pth"
-    CELL_MODEL = "./cell-model.pth"
+    # segment and generate csvs, including all-tasks.csv, all-well-tasks.csv
     segmentator = cellsegmentator.CellSegmentator(
-        NUC_MODEL,
-        CELL_MODEL,
+        cfg.NUC_MODEL,
+        cfg.CELL_MODEL,
         scale_factor=0.8,
         device="cuda",
         padding=False,
         multi_channel_model=True,
     )
-    if not os.path.exists(SEGMENTATION_FOLDER):
-        os.makedirs(SEGMENTATION_FOLDER)
-    segment(IMG_FOLDER, SEGMENTATION_FOLDER, segmentator)
+    if not os.path.exists(cfg.SEGMENTATION_FOLDER):
+        os.makedirs(cfg.SEGMENTATION_FOLDER)
+    segment(cfg.IMG_FOLDER, cfg.SEGMENTATION_FOLDER, segmentator)
