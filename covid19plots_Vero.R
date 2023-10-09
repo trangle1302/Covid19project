@@ -132,6 +132,22 @@ ggplot(filld, aes(xmin = start, xmax = end, ymin = 4, ymax = 5, fill = label)) +
 '''
 
 
+library(ggplot2)
+fold_changes <- c(rnorm(20000, 0, 2))
+pvalues <- runif(n=20000, min=1e-50, max=.1)
+dif <- data.frame(fc =fold_changes,pv =pvalues)
+dif$thershold <- ifelse(dif$fc > 1 & dif$pv < 0.01, "red", 
+                        ifelse(dif$fc < -1 & dif$pv < 0.01, -1, "blue"))
+ggplot(data=dif, aes(x=fc, y=-log10(pv))) +
+  geom_point( size=1 ,aes(color=as.factor(thershold))) +
+  theme(legend.position = "none") +
+  xlim(c(-10, 10)) + ylim(c(0, 15)) +
+  xlab("log2 fold change") + ylab("-log10 p-value")  + theme_bw()+
+  annotate("label", x =c(-8,5), y = 4.75, label = c("400","120"), col=c("red","steelblue"))+
+  annotate("text", x =c(-8,5), y = 5, label = c("50 FC>4","8FC <-4"))+
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),)
+        
 library(calibrate)
 # Volcano plot 
 res = read.csv('/home/trangle/Desktop/Covid19project/Foldchange_meanintensity_includingHPA057697.csv', header=TRUE)
