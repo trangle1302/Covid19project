@@ -1,13 +1,11 @@
-# To add a new cell, type '# %%'
-# To add a new markdown cell, type '# %% [markdown]'
-# ### This is to format the acquired image plates to the format of covid-annotation and then generate the all-tasks.csv and all-well-tasks.csv
-# ##### the csv files should be copied to the covid-annotation folder
+## This is to format the acquired image plates to the format of covid-annotation and then generate the all-tasks.csv and all-well-tasks.csv
+## the csv files should be copied to the covid-annotation folder
 import os
 from shutil import copyfile
 from glob import glob
 import numpy as np
 from imageio import imread, imsave
-
+from configs import cfg
 
 def format_covid_data(acquired_data_path, formatted_data_folder):
     """not fov_index_length should be set depending on how many fovs in one well. like 9 fov and 3 z-slice image, 3*9=27, then fov_index_length = 2. this is to ensure the z-stack be together in the annotation tool"""
@@ -185,23 +183,8 @@ def generate_max_projection_images(formatted_data_folder, data_base):
 
 
 if __name__ == "__main__":
-    # original datapath
-    #acquired_data_path = "/data/trang/covid19_data_CZ8746"
-    #formatted_data_folder = "/data/trang/covid19_data_CZ8746_formatted2"
-    #data_base = "/data/trang/covid19_data_CZ8746_max_projection2"
-    
-    # generate csvs, including all-tasks.csv, all-well-tasks.csv
-    # where to host the csvs
-    #annotation_folder = "/data/trang/covid19_data_CZ8746_annotation2"
-    
-    #ACQUIRED_DATA_PATH = "/data/trang/211111_COVID19_repurposing_Marianna"
-    ACQUIRED_DATA_PATH = "/data/trang/HPA_CZ8780" #HPA_DV9903_Prescreen"#/DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
-    FORMATTED_DATA_PATH = f"{ACQUIRED_DATA_PATH}_formatted"
-    IMG_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection"
-    ANNOTATION_FOLDER = f"{ACQUIRED_DATA_PATH}_max_projection_annotation"
-    channels = ["_blue.tiff", "_red.tiff", "_green.tiff", "_yellow.tiff"]
-    #format_covid_data(ACQUIRED_DATA_PATH, FORMATTED_DATA_PATH)
-    #generate_max_projection_images(FORMATTED_DATA_PATH, IMG_FOLDER)
-    #if not os.path.isdir(ANNOTATION_FOLDER):
-    #    os.makedirs(ANNOTATION_FOLDER)
-    generate_task_lists(ANNOTATION_FOLDER, IMG_FOLDER)
+    format_covid_data(cfg.ACQUIRED_DATA_PATH, cfg.FORMATTED_DATA_PATH)
+    generate_max_projection_images(cfg.FORMATTED_DATA_PATH, cfg.IMG_FOLDER)
+    if not os.path.isdir(cfg.ANNOTATION_FOLDER):
+        os.makedirs(cfg.ANNOTATION_FOLDER)
+    generate_task_lists(cfg.ANNOTATION_FOLDER, cfg.IMG_FOLDER)
