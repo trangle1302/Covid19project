@@ -5,26 +5,20 @@ import numpy as np
 import requests
 import scipy.stats
 import seaborn as sns
+import configs as cfg
 
-
-
-EXPERIMENT = "CZ8780"
-ACQUIRED_DATA_PATH = "/data/trang/HPA_CZ8780"#"/data/trang/HPA_DV9903_Prescreen"
-PLATEID = "CZ8780_plate_I" #"DV9903_240323_preHPA_II__2023-03-24T12_10_32-Measurement_1b"
-SAMPLES_DEST = f"{ACQUIRED_DATA_PATH}_max_projection_annotation/segmentation/{PLATEID}"
 url4labels = "https://raw.githubusercontent.com/haoxusci/imjoy-plugin-config/master/config/Covid19ImageAnnotator.imjoy.config.json"
 
-#EXPERIMENT = "CZ8751"
-if EXPERIMENT == "CZ8751": # plate 11,12
+if cfg.EXPERIMENT == "CZ8751": # plate 11,12
     NONINFECTED = ["G11", "A12", "B12", "C12", "D12", "E12", "F12", "G12", "H12"]
     #INFECTED = 
-elif EXPERIMENT == "CZ8746": # plate 10
+elif cfg.EXPERIMENT == "CZ8746": # plate 10
     NONINFECTED = ["A","B","C","D"]
     INFECTED = ["E","F","G","H"]
-elif EXPERIMENT == "DV9903":
+elif cfg.EXPERIMENT == "DV9903":
     INFECTED = ["A","B","C","D","E","F","G"]
     NONINFECTED = ["H"]
-elif EXPERIMENT == "CZ8780":
+elif cfg.EXPERIMENT == "CZ8780":
     NONINFECTED = ["B12", "C12", "D12", "E12", "H12"]
 
 def config_to_labels(imjoy_url):
@@ -41,7 +35,7 @@ def get_cells_filtered(well_cells):
     well_cells.loc[well_cells['Infected']==0, 'Infected'] = 'NI'
     well_cells.loc[well_cells['Infected']==1, 'Infected'] = 'I'
     print(well_cells)
-    """# integ intensity
+    """# sum intensity
     well_cells_nuclei_integ = well_cells[['image_id', 'protein-nuclei-integration', 'Infected']].rename(
         columns={"protein-nuclei-integration": "Intensity"}).assign(**dict.fromkeys(['value_type'], 'integ(nuclei)'))
     tStat_nuclei_integ, pValue_nuclei_integ = scipy.stats.ttest_ind(
@@ -91,9 +85,8 @@ def get_cells_filtered(well_cells):
     tStat_cell_mean, pValue_cell_mean = scipy.stats.ttest_ind(
         well_cells_cell_mean[well_cells_cell_mean['Infected']=='NI']['Intensity'],
         well_cells_cell_mean[well_cells_cell_mean['Infected']=='I']['Intensity']
-    )"""
-
-    """return {
+    )
+    return {
         'well_id': well_id,
         'pValue_nuclei_integ': pValue_nuclei_integ,
         'pValue_cytosol_integ': pValue_cytosol_integ,
@@ -116,8 +109,6 @@ def plot_violin(well_cells_filterted, pValue_nuclei_integ, pValue_cytosol_integ,
     fig = plt.figure(constrained_layout=True, figsize=(8, 8))
     gs = fig.add_gridspec(1, 1)
     ax = fig.add_subplot(gs[0, 0])
-    #well_cells_filterted, pValue_nuclei_integ, pValue_cytosol_integ, pValue_cell_integ = get_cells_filtered(df_cells, image_ids, well_id)
-    #print(df_cells)
     sns.violinplot(
         x="value_type",
         y="Intensity",
@@ -179,17 +170,6 @@ def plot_violin(well_cells_filterted, pValue_nuclei_integ, pValue_cytosol_integ,
         verticalalignment='top',
         bbox=props
     )
-    """
-    ax.text(
-        0.85,
-        0.78,
-        "P value : " + str(round(pValue_cell_mean, 6)),
-        transform=ax.transAxes,
-        fontsize=15,
-        horizontalalignment='center',
-        verticalalignment='top',
-        bbox=props
-    )"""
     ax.legend(bbox_to_anchor=(1.01, 1), loc=2, borderaxespad=0.)
     ymin, ymax = ax.get_ylim()
     print(ymin, ymax)
@@ -199,12 +179,12 @@ def plot_violin(well_cells_filterted, pValue_nuclei_integ, pValue_cytosol_integ,
     plt.savefig(os.path.join(save_dir, str(well_id) + '_mean.svg'), dpi=100)
 
 if __name__ == "__main__":
-    df_cells = pd.read_csv(os.path.join(SAMPLES_DEST, "cells_combined_nobigcell.csv")) 
-    meta = pd.read_csv(f'/home/trangle/Desktop/Covid19project/Experiment_design/meta_ab_{EXPERIMENT}.csv')
-    if EXPERIMENT == "CZ8751" or EXPERIMENT == "CZ8780":
+    df_cells = pd.read_csv(os.path.join(cfg.SAMPLES_DEST, "cells_combined_nobigcell.csv")) 
+    meta = pd.read_csv(f'/home/trangle/Desktop/Covid19project/Experiment_design/meta_ab_{cfg.EXPERIMENT}.csv')
+    if cfg.EXPERIMENT == "CZ8751" or cfg.EXPERIMENT == "CZ8780":
         meta["well_id"] = ["_".join([str(r.plate), r.well_id]) for _,r in meta.iterrows()]
-    violin_per_well = False
-    violin_per_ab = True
+    violin_per_well = False # generate 1 violin plot per well
+    violin_per_ab = True # generate 1 violin plot per antibody
 
     labels_dict = config_to_labels(url4labels)
     
@@ -212,7 +192,7 @@ if __name__ == "__main__":
         image_ids = list(set(df_cells['image_id']))
         well_ids = list(set(map(lambda item: '_'.join(item.split(os.sep)[-1].split('_')[:-1]), image_ids)))
         well_ids.sort()
-        save_dir = os.path.join(os.path.dirname(SAMPLES_DEST), "violin")
+        save_dir = os.path.join(os.path.dirname(cfg.SAMPLES_DEST), "violin")
         for well_id in well_ids:    
             well_image_ids = list(filter(lambda item: item if well_id == item[:-2] else None, image_ids))
             well_cells = df_cells[df_cells['image_id'].isin(well_image_ids)]
@@ -224,7 +204,7 @@ if __name__ == "__main__":
         print(meta.well_id, df_cells.well_id)
         df_cells['Ab'] = [meta[meta.well_id==well].Antibody.values[0] for well in df_cells.well_id]
         antibodies = list(set(df_cells.Ab))
-        save_dir = os.path.join(os.path.dirname(SAMPLES_DEST), "violin_ab")
+        save_dir = os.path.join(os.path.dirname(cfg.SAMPLES_DEST), "violin_ab")
         os.makedirs(save_dir, exist_ok=True)
         for ab in antibodies:
             well_cells = df_cells[df_cells.Ab == ab]
