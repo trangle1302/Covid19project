@@ -52,7 +52,8 @@ Paths need to be updated:
 - (s4_)`NONINFECTED`: Wells or well pattern with non-infected cells
 - (s4_)`INFECTED`: Wells or well pattern with non-infected cells
 
-Step 4. Fold change, volcano and circle plot
+Step 4. Fold change, volcano and circos plot
 ```sh
 python covid19plots.py
 ```
+Volcano and circos in R: `covid19plots_<cellline>.R`.
